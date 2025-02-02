@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "148189321289",
+    "project_id": "appp-e76ab",
+    "storage_bucket": "appp-e76ab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148189321289:android:e895c69b9f8e7c608e0798",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkKLe_sGK9UdyUluFj90eFeeyZLgZvJG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
