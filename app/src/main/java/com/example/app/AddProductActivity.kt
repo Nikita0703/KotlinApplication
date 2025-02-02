@@ -15,6 +15,8 @@ class AddProductActivity  : AppCompatActivity() {
     private lateinit var osEditText: EditText
     private lateinit var storageEditText: EditText
     private lateinit var addPhoneButton: Button
+    private lateinit var backButton: Button
+
 
     private val phoneRepo = ProductRepository() // Предполагается, что у вас есть класс PhoneRepository
 
@@ -28,6 +30,9 @@ class AddProductActivity  : AppCompatActivity() {
         osEditText = findViewById(R.id.osEditText)
         storageEditText = findViewById(R.id.storageEditText)
         addPhoneButton = findViewById(R.id.addPhoneButton)
+        backButton = findViewById(R.id.backButton)
+
+        backButton.setOnClickListener{back()}
 
         // Установка обработчика нажатия на кнопку
         addPhoneButton.setOnClickListener {
@@ -67,5 +72,11 @@ class AddProductActivity  : AppCompatActivity() {
         modelEditText.text.clear()
         osEditText.text.clear()
         storageEditText.text.clear()
+    }
+
+    private fun back() {
+        val intent = Intent(this, ProductActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

@@ -5,6 +5,11 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Назад" />
     <EditText
         android:id="@+id/brandEditText"
         android:layout_width="match_parent"
