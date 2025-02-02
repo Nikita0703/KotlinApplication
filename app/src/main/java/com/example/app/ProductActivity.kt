@@ -13,7 +13,6 @@ import com.google.firebase.database.*
 import com.google.firebase.database.DatabaseReference
 class ProductActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
-    private lateinit var editTextName: EditText
     private lateinit var buttonAdd: Button
     private lateinit var buttonRead: Button
     private lateinit var buttonProfile: Button
@@ -29,16 +28,13 @@ class ProductActivity : AppCompatActivity() {
         setContentView(R.layout.activity_product)
 
         database = FirebaseDatabase.getInstance().getReference("names")
-        editTextName = findViewById(R.id.editTextName)
         buttonAdd = findViewById(R.id.buttonAdd)
-        buttonRead = findViewById(R.id.buttonRead)
         listViewNames = findViewById(R.id.listViewNames)
         buttonProfile = findViewById(R.id.buttonProfile)
 
         readNames()
 
         buttonAdd.setOnClickListener { addName() }
-        buttonRead.setOnClickListener { readNames() }
         buttonProfile.setOnClickListener { profile()}
     }
     private fun addName() {

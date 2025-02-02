@@ -34,6 +34,10 @@
             android:theme="@style/Theme.AppCompat"
             android:name=".AddProductActivity">
         </activity>
+        <activity
+            android:theme="@style/Theme.AppCompat"
+            android:name=".InfoActivity">
+        </activity>
     </application>
 
 </manifest>
