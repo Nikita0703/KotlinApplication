@@ -5,30 +5,43 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <ImageView
+        android:id="@+id/profileImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/unnamed"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
+
     <TextView
         android:id="@+id/textViewBrand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
 
     <TextView
         android:id="@+id/textViewModel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
 
     <TextView
         android:id="@+id/textViewOs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
 
     <TextView
         android:id="@+id/textViewStorage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp" />  <!-- Отступ снизу -->
+
     <Button
         android:id="@+id/backButton"
         android:layout_width="match_parent"
