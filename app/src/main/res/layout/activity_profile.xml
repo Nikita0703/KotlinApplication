@@ -13,30 +13,30 @@
         android:layout_gravity="center"
         android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:id="@+id/textViewBrand"
+    <EditText
+        android:id="@+id/editTextName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
 
-    <TextView
-        android:id="@+id/textViewModel"
+    <EditText
+        android:id="@+id/editTextSurname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
 
-    <TextView
-        android:id="@+id/textViewOs"
+    <EditText
+        android:id="@+id/editTextEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
 
-    <TextView
-        android:id="@+id/textViewStorage"
+    <EditText
+        android:id="@+id/editTextBirthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
