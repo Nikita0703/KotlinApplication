@@ -32,4 +32,12 @@ class AuthRepository {
     fun getCurrentUser(): FirebaseUser? {
         return auth.currentUser
     }
+
+    fun getCurrentUserId(): String? {
+        val user = auth.currentUser
+        return user?.uid // Возвращает userId или null, если пользователь не авторизован
+    }
+
+
+
 }
