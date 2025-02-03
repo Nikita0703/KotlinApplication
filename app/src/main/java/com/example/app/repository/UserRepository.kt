@@ -72,4 +72,57 @@ class UserRepository {
                 }
             }
     }
+
+    fun addFavoriteByEmail(email: String, favorite: String, onComplete: (Boolean, String?) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+
+        findUserByEmail(email) { user, errorMessage ->
+            if (user != null) {
+                // Добавляем новый элемент в список favorites
+                val updatedFavorites = user.favorites.toMutableList()
+                updatedFavorites.add(favorite)
+
+                // Обновляем пользователя в базе данных
+                db.collection("users").whereEqualTo("email", email).get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful && task.result != null && task.result.documents.isNotEmpty()) {
+                            val userDocument = task.result.documents[0]
+                            userDocument.reference.update("favorites", updatedFavorites)
+                                .addOnCompleteListener { updateTask ->
+                                    if (updateTask.isSuccessful) {
+                                        onComplete(true, null) // Успех
+                                    } else {
+                                        onComplete(false, updateTask.exception?.message) // Ошибка при обновлении
+                                    }
+                                }
+                        } else {
+                            onComplete(false, "Ошибка при получении документа пользователя") // Ошибка получения документа
+                        }
+                    }
+            } else {
+                onComplete(false, errorMessage) // Ошибка поиска пользователя
+            }
+        }
+    }
+
+    fun getFavoritesByEmail(email: String, onComplete: (List<String>?, String?) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users")
+            .whereEqualTo("email", email)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val documents = task.result?.documents
+                    if (documents != null && documents.isNotEmpty()) {
+                        val user = documents[0].toObject(User::class.java)
+                        onComplete(user?.favorites, null) // Возвращаем список favorites
+                    } else {
+                        onComplete(null, "Пользователь не найден") // Пользователь не найден
+                    }
+                } else {
+                    onComplete(null, task.exception?.message) // Ошибка при выполнении запроса
+                }
+            }
+    }
+
 }

@@ -22,6 +22,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var editTextBirthday: EditText
     private lateinit var backButton: Button
     private lateinit var applyButton: Button
+    private lateinit var favoriteButton: Button
+
 
     private val authRepository = AuthRepository()
     private val userRepository =  UserRepository()
@@ -40,6 +42,9 @@ class ProfileActivity : AppCompatActivity() {
 
         backButton.setOnClickListener{back()}
         applyButton.setOnClickListener{apply()}
+
+        favoriteButton = findViewById(R.id.favoriteButton)
+        favoriteButton.setOnClickListener{favorite()}
 
         // Получение данных о телефоне (например, из Intent или создания нового объекта)
         val phone = Phone("Novichenko", "Nikita", "Nikita@gmail.com", "07.03.2005")
@@ -95,5 +100,11 @@ class ProfileActivity : AppCompatActivity() {
     }
     )
 
+    }
+
+    private fun favorite(){
+        val intent = Intent(this, FavoriteActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

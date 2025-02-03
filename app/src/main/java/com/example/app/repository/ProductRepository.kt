@@ -4,6 +4,7 @@ import com.example.app.entity.Phone
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.tasks.await
 
 class ProductRepository {
     private val db: FirebaseFirestore = Firebase.firestore
@@ -49,4 +50,41 @@ class ProductRepository {
                 onFailure(e)
             }
     }
+
+    fun findPhoneByModel(model: String, onSuccess: (Phone) -> Unit, onFailure: (Any?) -> Unit) {
+        db.collection("phones")
+            .whereEqualTo("model", model)
+            .get()
+            .addOnSuccessListener {querySnapshot ->
+                val phone = querySnapshot.documents.first().toObject(Phone::class.java)
+                if (phone != null) {
+                    onSuccess(phone)
+                }
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
+            }
+    }
+
+
+   /* suspend fun findPhoneByModel(model: String): Phone? {
+        val querySnapshot = db.collection("phones")
+            .whereEqualTo("model", model)
+            .get()
+            .await()
+
+        return if (querySnapshot.isEmpty) {
+            null
+        } else {
+            // Предполагаем, что модель уникальна, и возвращаем первый найденный телефон
+            querySnapshot.documents.first().toObject(Phone::class.java)
+        }
+    }
+
+    */
+
+
+
+
+
 }

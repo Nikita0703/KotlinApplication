@@ -38,6 +38,10 @@
             android:theme="@style/Theme.AppCompat"
             android:name=".InfoActivity">
         </activity>
+        <activity
+            android:theme="@style/Theme.AppCompat"
+            android:name=".FavoriteActivity">
+        </activity>
     </application>
 
 </manifest>
