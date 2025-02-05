@@ -71,7 +71,7 @@ class AddProductActivity  : AppCompatActivity() {
        }
    }
 
-           private fun pickImageFromDownloads() {
+    private fun pickImageFromDownloads() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "image/*" // Указываем, что мы хотим выбрать изображение
@@ -94,6 +94,8 @@ class AddProductActivity  : AppCompatActivity() {
 
         val phone = Phone(brand, model, os, storage)
 
+        saveImageToStorage()
+
         phoneRepo.addPhone(phone,
             onSuccess = {
                 Toast.makeText(this, "Телефон успешно добавлен", Toast.LENGTH_SHORT).show()
@@ -107,7 +109,7 @@ class AddProductActivity  : AppCompatActivity() {
             }
         )
 
-        saveImageToStorage()
+       // saveImageToStorage()
     }
 
     private fun clearFields() {
@@ -125,6 +127,7 @@ class AddProductActivity  : AppCompatActivity() {
 
     private fun saveImageToStorage() {
         val brandName = brandEditText.text.toString()
+        val model = modelEditText.text.toString()
 
         // Получите изображение из ImageView (предполагаем, что оно уже выбрано)
         imageView.isDrawingCacheEnabled = true
@@ -139,7 +142,7 @@ class AddProductActivity  : AppCompatActivity() {
 
         // Сохраните изображение в файл с именем из поля brandEditText
         try {
-            val file = File(directory, "$brandName.png")
+            val file = File(directory, "$model.png")
             val outputStream = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
             outputStream.flush()

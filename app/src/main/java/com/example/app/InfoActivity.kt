@@ -1,17 +1,21 @@
 package com.example.app
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.app.repository.AuthRepository
 import com.example.app.repository.UserRepository
+import java.io.File
 
 class InfoActivity : AppCompatActivity(){
     private lateinit var backButton: Button
     private lateinit var favoriteButton: Button
+    private lateinit var imageView: ImageView
 
     private val authRepository = AuthRepository()
     private val userRepository =  UserRepository()
@@ -37,6 +41,23 @@ class InfoActivity : AppCompatActivity(){
         findViewById<TextView>(R.id.modelTextView).text = model
         findViewById<TextView>(R.id.osTextView).text = os
         findViewById<TextView>(R.id.storageTextView).text = storage
+
+        imageView = findViewById(R.id.imageView)
+
+        // Путь к директории
+        val directory = File(filesDir, "images")
+        // Путь к изображению
+        val imageFile = File(directory, "$model.png")
+
+        // Проверяем, существует ли файл
+        if (imageFile.exists()) {
+            // Загружаем изображение в ImageView
+            val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+            imageView.setImageBitmap(bitmap)
+        } else {
+            // Обработка случая, если файл не найден
+           // imageView.setImageResource(R.drawable.placeholder) // Замените на ваш ресурс-заполнитель
+        }
     }
 
     private fun back() {
