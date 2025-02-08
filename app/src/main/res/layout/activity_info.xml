@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Назад" />
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -33,16 +38,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp" />
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Назад" />
-    <Button
-        android:id="@+id/favoriteButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="в избранное" />
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="match_parent"

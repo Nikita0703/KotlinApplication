@@ -7,14 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.app.InfoActivity
 import com.example.app.R
 import com.example.app.entity.Phone
+import com.example.app.repository.AuthRepository
+import com.example.app.repository.ProductRepository
+import com.example.app.repository.UserRepository
 import java.io.File
 
 class PhoneAdapter (context: Context, private val phones: List<Phone>) : ArrayAdapter<Phone>(context, 0, phones) {
+    private lateinit var favoriteButton: Button
+    private val authRepository = AuthRepository()
+    private val userRepository =  UserRepository()
+    private val productRepository = ProductRepository()
+    private var model = ""
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         // Получаем телефон по позиции
         val phone = getItem(position)
@@ -28,11 +39,14 @@ class PhoneAdapter (context: Context, private val phones: List<Phone>) : ArrayAd
 
         val imageView = listItemView.findViewById<ImageView>(R.id.imageView)
 
+        favoriteButton = listItemView.findViewById(R.id.favoriteButton)
+        favoriteButton.setOnClickListener{addToFavorite()}
+
         // Путь к директории
         val directory = File(context.filesDir, "images")
         // Путь к изображению
 
-        val model = phone?.model
+         model = phone?.model?:"model"
 
         val imageFile = File(directory, "$model.png")
 
@@ -61,5 +75,18 @@ class PhoneAdapter (context: Context, private val phones: List<Phone>) : ArrayAd
         }
 
         return listItemView
+    }
+
+    private fun addToFavorite(){
+        val user = authRepository.getCurrentUser()
+        val email: String = user?.email ?: "default@example.com"
+
+        userRepository.addFavoriteByEmail(email, model) { success, errorMessage ->
+            if (success) {
+                //context.Toast.makeText(this, "добавлено успешна!", Toast.LENGTH_SHORT).show()
+            } else {
+                println("Не удалосъ добавить в избранное: $errorMessage")
+            }
+        }
     }
 }

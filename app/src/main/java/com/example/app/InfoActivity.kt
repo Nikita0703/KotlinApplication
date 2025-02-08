@@ -15,7 +15,7 @@ import java.io.File
 
 class InfoActivity : AppCompatActivity(){
     private lateinit var backButton: Button
-    private lateinit var favoriteButton: Button
+   // private lateinit var favoriteButton: Button
     private lateinit var imageView: ImageView
     private lateinit var deleteButton: Button
 
@@ -31,8 +31,8 @@ class InfoActivity : AppCompatActivity(){
         backButton.setOnClickListener{back()}
         deleteButton = findViewById(R.id.deleteButton)
         deleteButton.setOnClickListener{delete()}
-        favoriteButton = findViewById(R.id.favoriteButton)
-        favoriteButton.setOnClickListener{addToFavorite()}
+        //favoriteButton = findViewById(R.id.favoriteButton)
+       // favoriteButton.setOnClickListener{addToFavorite()}
 
         // Получаем данные из Intent
         val brand = intent.getStringExtra("BRAND")
