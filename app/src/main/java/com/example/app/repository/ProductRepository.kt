@@ -83,6 +83,26 @@ class ProductRepository {
 
     */
 
+    // Метод для получения documentId по модели телефона
+    fun getDocumentIdByModel(model: String, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
+        db.collection("phones")
+            .whereEqualTo("model", model)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    // Получаем первый документ из результатов
+                    val document = querySnapshot.documents.first()
+                    // Возвращаем его ID
+                    onSuccess(document.id)
+                } else {
+                    // Если документы не найдены
+                    onFailure(Exception("Document not found"))
+                }
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
+            }
+    }
 
 
 

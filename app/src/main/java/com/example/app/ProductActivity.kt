@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,8 @@ class ProductActivity : AppCompatActivity() {
 
     private val namesList = mutableListOf<String>()
     private lateinit var adapter: ArrayAdapter<String>
+
+    private lateinit var imageView: ImageView
 
     private val phoneRepo = ProductRepository()
 
