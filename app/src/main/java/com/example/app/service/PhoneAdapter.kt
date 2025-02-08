@@ -66,10 +66,14 @@ class PhoneAdapter (context: Context, private val phones: List<Phone>) : ArrayAd
         // Устанавливаем обработчик клика
         listItemView.setOnClickListener {
             val intent = Intent(context, InfoActivity::class.java).apply {
-                putExtra("BRAND", phone?.brand)
+                putExtra("BRAND", "Брэнд: ${phone?.brand}")
                 putExtra("MODEL", phone?.model)
-                putExtra("OS", phone?.os)
-                putExtra("STORAGE", phone?.storage)
+                putExtra("OS", "OC: ${phone?.os}")
+                putExtra("STORAGE", "Память: ${phone?.storage}")
+                putExtra("COLOR","Цвет: ${phone?.color}")
+                putExtra("RELEASEYEAR","Год: ${phone?.releaseYear}")
+                putExtra("PRICE","Цена: ${phone?.price}")
+                putExtra("WARRANTYPERIOD","Гарантия:${phone?.warrantyPeriod}")
             }
             context.startActivity(intent)
         }

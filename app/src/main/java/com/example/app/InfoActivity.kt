@@ -39,12 +39,20 @@ class InfoActivity : AppCompatActivity(){
         val model = intent.getStringExtra("MODEL")
         val os = intent.getStringExtra("OS")
         val storage = intent.getStringExtra("STORAGE")
+        val price = intent.getStringExtra("PRICE")
+        val color = intent.getStringExtra("COLOR")
+        val releaseYear = intent.getStringExtra("RELEASEYEAR")
+        val warrantyPeriod = intent.getStringExtra("WARRANTYPERIOD")
 
         // Находим TextView и устанавливаем текст
         findViewById<TextView>(R.id.brandTextView).text = brand
-        findViewById<TextView>(R.id.modelTextView).text = model
+        findViewById<TextView>(R.id.modelTextView).text = "Модель: ${model}"
         findViewById<TextView>(R.id.osTextView).text = os
         findViewById<TextView>(R.id.storageTextView).text = storage
+        findViewById<TextView>(R.id.priceTextView).text = price
+        findViewById<TextView>(R.id.colorTextView).text = color
+        findViewById<TextView>(R.id.releaseYearTextView).text = releaseYear
+        findViewById<TextView>(R.id.warrantyPeriodTextView).text = warrantyPeriod
 
         imageView = findViewById(R.id.imageView)
 
