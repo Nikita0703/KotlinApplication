@@ -21,6 +21,10 @@ class AddProductActivity  : AppCompatActivity() {
     private lateinit var modelEditText: EditText
     private lateinit var osEditText: EditText
     private lateinit var storageEditText: EditText
+    private lateinit var priceEditText: EditText
+    private lateinit var colorEditText: EditText
+    private lateinit var releaseYearEditText: EditText
+    private lateinit var  warrantyPeriodEditText: EditText
     private lateinit var addPhoneButton: Button
     private lateinit var backButton: Button
     private lateinit var imageView: ImageView
@@ -39,6 +43,11 @@ class AddProductActivity  : AppCompatActivity() {
         modelEditText = findViewById(R.id.modelEditText)
         osEditText = findViewById(R.id.osEditText)
         storageEditText = findViewById(R.id.storageEditText)
+        priceEditText = findViewById(R.id.priceEditText)
+        colorEditText = findViewById(R.id.colorEditText)
+        releaseYearEditText = findViewById(R.id.releaseYearEditText)
+        warrantyPeriodEditText = findViewById(R.id.warrantyPeriodEditText)
+
         addPhoneButton = findViewById(R.id.addPhoneButton)
         backButton = findViewById(R.id.backButton)
         imageView = findViewById(R.id.imageView)
@@ -86,13 +95,17 @@ class AddProductActivity  : AppCompatActivity() {
         val model = modelEditText.text.toString()
         val os = osEditText.text.toString()
         val storage = storageEditText.text.toString()
+        val price = priceEditText.text.toString()
+        val color = colorEditText.text.toString()
+        val year = releaseYearEditText.text.toString()
+        val warranty = warrantyPeriodEditText.text.toString()
 
-        if (brand.isEmpty() || model.isEmpty() || os.isEmpty() || storage == null) {
+        if (brand.isEmpty() || model.isEmpty() || os.isEmpty() || storage.isEmpty() || price.isEmpty() || color.isEmpty() || year.isEmpty() || warranty.isEmpty()) {
             Toast.makeText(this, "Пожалуйста, заполните все поля корректно", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val phone = Phone(brand, model, os, storage)
+        val phone = Phone(brand, model, os, storage,price,color,year,warranty)
 
         saveImageToStorage()
 

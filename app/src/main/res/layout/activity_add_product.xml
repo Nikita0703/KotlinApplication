@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,15 +11,10 @@
 
     <Button
         android:id="@+id/backButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Назад" />
     <!-- Кнопка для выбора изображения -->
-    <Button
-        android:id="@+id/selectImageButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Выбрать изображение" />
 
     <!-- ImageView для отображения выбранного изображения -->
     <ImageView
@@ -24,6 +23,14 @@
         android:layout_height="200dp"
         android:layout_marginTop="16dp"
         android:scaleType="centerCrop" />
+
+    <Button
+        android:id="@+id/selectImageButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:text="Выбрать изображение" />
+
     <EditText
         android:id="@+id/brandEditText"
         android:layout_width="match_parent"
@@ -48,10 +55,31 @@
         android:layout_height="wrap_content"
         android:hint="Storage (in GB)"
         android:inputType="number" />
+    <EditText
+        android:id="@+id/priceEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Price"/>
+    <EditText
+        android:id="@+id/colorEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Color"/>
+    <EditText
+        android:id="@+id/releaseYearEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Year"/>
+    <EditText
+        android:id="@+id/warrantyPeriodEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="warrantyPeriod"/>
 
     <Button
         android:id="@+id/addPhoneButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add Phone" />
 </LinearLayout>
+</ScrollView>
