@@ -1,11 +1,16 @@
 package com.example.app
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +19,8 @@ import com.example.app.entity.Phone
 import com.example.app.entity.User
 import com.example.app.repository.AuthRepository
 import com.example.app.repository.UserRepository
+import java.io.File
+import java.io.FileOutputStream
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var editTextName : EditText
@@ -26,6 +33,10 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var backButton: Button
     private lateinit var applyButton: Button
     private lateinit var favoriteButton: Button
+
+    private lateinit var imageView: ImageView
+
+    private val IMAGE_PICK_CODE = 1000
 
 
     private val authRepository = AuthRepository()
@@ -52,6 +63,14 @@ class ProfileActivity : AppCompatActivity() {
         favoriteButton = findViewById(R.id.favoriteButton)
         favoriteButton.setOnClickListener{favorite()}
 
+        imageView = findViewById(R.id.imageView)
+
+        val selectImageButton: Button = findViewById(R.id.selectImageButton)
+        selectImageButton.setOnClickListener {
+            //pickImageFromGallery()
+            pickImageFromDownloads()
+        }
+
         // Получение данных о телефоне (например, из Intent или создания нового объекта)
         val phone = Phone("Novichenko", "Nikita", "Nikita@gmail.com", "07.03.2005")
 
@@ -76,6 +95,22 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
 
+
+        val directory = File(filesDir, "images")
+// Путь к изображению
+        val imageFile = File(directory, "$email.png")
+
+// Проверяем, существует ли файл
+        if (imageFile.exists()) {
+            // Загружаем изображение в ImageView
+            val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+            imageView.setImageBitmap(bitmap)
+        } else {
+            // Загружаем изображение из drawable
+            val drawableId = R.drawable.unnamed // Убедитесь, что у вас есть изображение unnamed.jpg в папке drawable
+            val bitmap = BitmapFactory.decodeResource(resources, drawableId)
+            imageView.setImageBitmap(bitmap)
+        }
         // Установка данных в TextView
         //editTextName.text = Editable.Factory.getInstance().newEditable("${phone.brand}")
         //editTextSurname.text = Editable.Factory.getInstance().newEditable("${phone.model}")
@@ -145,6 +180,7 @@ class ProfileActivity : AppCompatActivity() {
             Toast.makeText(this, "Ошибка при проверке существования пользователя: ${exception.message}", Toast.LENGTH_SHORT).show()
         })
 
+        saveImageToStorage()
 
     }
 
@@ -152,5 +188,51 @@ class ProfileActivity : AppCompatActivity() {
         val intent = Intent(this, FavoriteActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK) {
+            val imageUri: Uri? = data?.data
+            imageView.setImageURI(imageUri) // Отобразить выбранное изображение
+        }
+    }
+
+    private fun pickImageFromDownloads() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*" // Указываем, что мы хотим выбрать изображение
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png")) // Можно указать конкретные типы изображений
+        }
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    private fun saveImageToStorage() {
+        val email = editTextEmail.text.toString()
+
+        // Получите изображение из ImageView (предполагаем, что оно уже выбрано)
+        imageView.isDrawingCacheEnabled = true
+        imageView.buildDrawingCache()
+        val bitmap = imageView.drawingCache
+
+        // Создайте папку для хранения изображений, если она не существует
+        val directory = File(filesDir, "images")
+        if (!directory.exists()) {
+            directory.mkdirs()
+        }
+
+        // Сохраните изображение в файл с именем из поля brandEditText
+        try {
+            val file = File(directory, "$email.png")
+            val outputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            outputStream.flush()
+            outputStream.close()
+            imageView.isDrawingCacheEnabled = false // Отключить кэширование
+            // Вы можете добавить уведомление об успешном сохранении
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Обработка ошибок
+        }
     }
 }
