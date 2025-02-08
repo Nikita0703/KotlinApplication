@@ -100,7 +100,7 @@ class ProfileActivity : AppCompatActivity() {
 
         val new = User(name, surname, email, birthday,phoneNumber,gender)
 
-    userRepository.addUser(new,
+    /*userRepository.addUser(new,
     onSuccess = {
         Toast.makeText(this, "Телефон успешно добавлен", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, ProductActivity::class.java)
@@ -113,7 +113,9 @@ class ProfileActivity : AppCompatActivity() {
     )
 
 
-        /*userRepository.getUserByEmail(email, onSuccess = { existingUser ->
+     */
+
+        userRepository.getUserByEmail(email, onSuccess = { existingUser ->
             if (existingUser != null) {
                 userRepository.getDocumentIdByEmail(email, { documentId ->
                     userRepository.updateUser(documentId, new, onSuccess = {
@@ -143,7 +145,6 @@ class ProfileActivity : AppCompatActivity() {
             Toast.makeText(this, "Ошибка при проверке существования пользователя: ${exception.message}", Toast.LENGTH_SHORT).show()
         })
 
-         */
 
     }
 
