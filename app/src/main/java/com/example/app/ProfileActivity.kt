@@ -20,6 +20,9 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var editTextSurname : EditText
     private lateinit var editTextEmail : EditText
     private lateinit var editTextBirthday: EditText
+    private lateinit var editTextPhone: EditText
+    private lateinit var editTextGender: EditText
+
     private lateinit var backButton: Button
     private lateinit var applyButton: Button
     private lateinit var favoriteButton: Button
@@ -37,6 +40,9 @@ class ProfileActivity : AppCompatActivity() {
         editTextSurname = findViewById(R.id.editTextSurname );
         editTextEmail = findViewById(R.id.editTextEmail );
         editTextBirthday = findViewById(R.id.editTextBirthday);
+        editTextPhone = findViewById(R.id.editTextPhone);
+        editTextGender = findViewById(R.id.editTextGender);
+
         backButton = findViewById(R.id.backButton)
         applyButton = findViewById(R.id.applyButton)
 
@@ -58,11 +64,15 @@ class ProfileActivity : AppCompatActivity() {
                 editTextSurname.text = Editable.Factory.getInstance().newEditable("${user.surname}")
                 editTextEmail.text = Editable.Factory.getInstance().newEditable("${user.email}")
                 editTextBirthday.text = Editable.Factory.getInstance().newEditable("${user.birthday}")
+                editTextPhone.text = Editable.Factory.getInstance().newEditable("${user.phoneNumber}")
+                editTextGender.text = Editable.Factory.getInstance().newEditable("${user.gender}")
             } else {
                 editTextName.text = Editable.Factory.getInstance().newEditable("не указано")
                 editTextSurname.text = Editable.Factory.getInstance().newEditable("не указвоно")
                 editTextEmail.text = Editable.Factory.getInstance().newEditable("${email}")
                 editTextBirthday.text = Editable.Factory.getInstance().newEditable("не указано")
+                editTextPhone.text = Editable.Factory.getInstance().newEditable("не указано")
+                editTextGender.text = Editable.Factory.getInstance().newEditable("не указано")
             }
         }
 
@@ -85,8 +95,10 @@ class ProfileActivity : AppCompatActivity() {
         val birthday = editTextBirthday.text.toString();
         val user = authRepository.getCurrentUser()
         val email: String = user?.email ?: "default@example.com"
+        val phoneNumber = editTextPhone.text.toString()
+        val gender = editTextGender.text.toString()
 
-        val new = User(name, surname, email, birthday)
+        val new = User(name, surname, email, birthday,phoneNumber,gender)
 
     userRepository.addUser(new,
     onSuccess = {
@@ -99,6 +111,39 @@ class ProfileActivity : AppCompatActivity() {
         Toast.makeText(this, "Ошибка при добавлении телефона: ${exception.message}", Toast.LENGTH_SHORT).show()
     }
     )
+
+
+        /*userRepository.getUserByEmail(email, onSuccess = { existingUser ->
+            if (existingUser != null) {
+                userRepository.getDocumentIdByEmail(email, { documentId ->
+                    userRepository.updateUser(documentId, new, onSuccess = {
+                        Toast.makeText(this, "Данные пользователя успешно обновлены", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, ProductActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }, onFailure = { exception ->
+                        Toast.makeText(this, "Ошибка при обновлении данных: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    })
+                    }, { exception ->
+                        // Обработка ошибки удаления
+                        Toast.makeText(this, "ошибка при удалении!", Toast.LENGTH_SHORT).show()
+                    })
+            } else {
+                // Пользователь не существует, вызываем метод add
+                userRepository.addUser(new, onSuccess = {
+                    Toast.makeText(this, "Пользователь успешно добавлен", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, ProductActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }, onFailure = { exception ->
+                    Toast.makeText(this, "Ошибка при добавлении пользователя: ${exception.message}", Toast.LENGTH_SHORT).show()
+                })
+            }
+        }, onFailure = { exception ->
+            Toast.makeText(this, "Ошибка при проверке существования пользователя: ${exception.message}", Toast.LENGTH_SHORT).show()
+        })
+
+         */
 
     }
 

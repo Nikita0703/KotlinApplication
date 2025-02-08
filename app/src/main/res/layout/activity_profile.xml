@@ -1,4 +1,7 @@
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,39 +46,144 @@
         android:layout_gravity="center"
         android:layout_marginBottom="16dp" />
 
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editTextSurname"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Имя:"
+            android:textSize="20sp"
+            android:layout_marginEnd="8dp" />  <!-- Отступ между TextView и EditText -->
+
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/editTextBirthday"
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Фамилия:"
+            android:textSize="20sp"
+            android:layout_marginEnd="8dp" />  <!-- Отступ между TextView и EditText -->
+
+        <EditText
+            android:id="@+id/editTextSurname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp" />  <!-- Отступ снизу -->
+        android:orientation="horizontal">
 
-    <Button
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email:"
+            android:textSize="20sp"
+            android:layout_marginEnd="8dp" />  <!-- Отступ между TextView и EditText -->
+
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:layout_marginBottom="4dp" />  <!-- Отступ снизу -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дата рождения:"
+            android:textSize="20sp"
+            android:layout_marginEnd="8dp" />  <!-- Отступ между TextView и EditText -->
+
+        <EditText
+            android:id="@+id/editTextBirthday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:layout_marginBottom="16dp" />  <!-- Отступ снизу -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Телефон:"
+            android:textSize="20sp"
+            android:layout_marginEnd="8dp" />  <!-- Отступ между TextView и EditText -->
+
+        <EditText
+            android:id="@+id/editTextPhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:layout_marginBottom="16dp" />  <!-- Отступ снизу -->
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Пол:"
+                android:textSize="20sp"
+                android:layout_marginEnd="8dp" />  <!-- Отступ между TextView и EditText -->
+
+            <EditText
+                android:id="@+id/editTextGender"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:layout_marginBottom="16dp" />  <!-- Отступ снизу -->
+        </LinearLayout>
+    </LinearLayout>
+
+        <Button
         android:id="@+id/applyButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Применить" />
 
 </LinearLayout>
+</ScrollView>

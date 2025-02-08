@@ -31,6 +31,58 @@ class UserRepository {
             }
     }
 
+
+
+    // Метод для получения пользователя по email
+    fun getUserByEmail(email: String, onSuccess: (User?) -> Unit, onFailure: (Exception) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users")
+            .whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    onSuccess(null) // Если пользователь не найден
+                } else {
+                    for (document in documents) {
+                        val user = document.toObject(User::class.java) // Преобразуем документ в объект User
+                        onSuccess(user) // Возвращаем найденного пользователя
+                        return@addOnSuccessListener
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception) // Обрабатываем исключения
+            }
+    }
+
+    // Метод для обновления пользователя
+    fun updateUser(userId: String, updatedUser: User, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users").document(userId)
+            .set(updatedUser)
+            .addOnSuccessListener {
+                onSuccess() // Успех
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception) // Обрабатываем исключения
+            }
+    }
+
+    // Метод для добавления нового пользователя
+    /*fun addUser(newUser: User, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users").add(newUser)
+            .addOnSuccessListener {
+                onSuccess() // Успех
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception) // Обрабатываем исключения
+            }
+    }
+
+     */
+
+
     // Метод для поиска пользователя по email
     fun findUserByEmail(email: String, onComplete: (User?, String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
@@ -54,7 +106,7 @@ class UserRepository {
     }
 
     // Метод для проверки существования пользователя по email
-    fun isExistByEmail(email: String, onComplete: (Boolean, String?) -> Unit) {
+    fun getUserByEmail(email: String, onComplete: (Boolean, String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("users")
             .whereEqualTo("email", email)
@@ -148,7 +200,10 @@ class UserRepository {
                                     if (updateTask.isSuccessful) {
                                         onComplete(true, null) // Успешно удалено
                                     } else {
-                                        onComplete(false, updateTask.exception?.message) // Ошибка при обновлении
+                                        onComplete(
+                                            false,
+                                            updateTask.exception?.message
+                                        ) // Ошибка при обновлении
                                     }
                                 }
                         } else {
@@ -161,9 +216,29 @@ class UserRepository {
                     onComplete(false, task.exception?.message) // Ошибка при выполнении запроса
                 }
             }
+
     }
 
-
+    fun getDocumentIdByEmail(email: String, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users")
+            .whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    // Получаем первый документ из результатов
+                    val document = querySnapshot.documents.first()
+                    // Возвращаем его ID
+                    onSuccess(document.id)
+                } else {
+                    // Если документы не найдены
+                    onFailure(Exception("Document not found"))
+                }
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
+            }
+    }
 }
 
 
