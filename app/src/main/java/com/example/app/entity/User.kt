@@ -5,5 +5,5 @@ data class User (
     val surname: String = " ",
     val email: String = " ",
     val birthday: String = " ",
-    val favorites: List<String> = listOf()
+    val favorites: MutableList<String> = mutableListOf()
 )

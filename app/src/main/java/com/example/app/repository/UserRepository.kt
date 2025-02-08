@@ -125,4 +125,46 @@ class UserRepository {
             }
     }
 
+    fun deleteModelFromFavoritesByEmail(favorite: String, email: String, onComplete: (Boolean, String?) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users")
+            .whereEqualTo("email", email)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val documents = task.result?.documents
+                    if (documents != null && documents.isNotEmpty()) {
+                        val userDocument = documents[0]
+                        val user = userDocument.toObject(User::class.java)
+
+                        // Проверяем, есть ли элемент в favorites
+                        if (user?.favorites?.contains(favorite) == true) {
+                            // Удаляем элемент из списка favorites
+                            user.favorites.remove(favorite)
+
+                            // Обновляем документ в Firestore
+                            userDocument.reference.update("favorites", user.favorites)
+                                .addOnCompleteListener { updateTask ->
+                                    if (updateTask.isSuccessful) {
+                                        onComplete(true, null) // Успешно удалено
+                                    } else {
+                                        onComplete(false, updateTask.exception?.message) // Ошибка при обновлении
+                                    }
+                                }
+                        } else {
+                            onComplete(false, "Элемент не найден в избранном") // Элемент не найден
+                        }
+                    } else {
+                        onComplete(false, "Пользователь не найден") // Пользователь не найден
+                    }
+                } else {
+                    onComplete(false, task.exception?.message) // Ошибка при выполнении запроса
+                }
+            }
+    }
+
+
 }
+
+
+

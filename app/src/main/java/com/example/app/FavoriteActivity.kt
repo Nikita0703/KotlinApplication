@@ -10,6 +10,7 @@ import com.example.app.repository.AuthRepository
 import com.example.app.repository.ProductRepository
 import com.example.app.repository.UserRepository
 import com.example.app.service.PhoneAdapter
+import com.example.app.service.PhoneFavoriteAdapter
 import com.google.firebase.database.FirebaseDatabase
 
 class FavoriteActivity  : AppCompatActivity(){
@@ -37,7 +38,7 @@ class FavoriteActivity  : AppCompatActivity(){
             if (favorites != null) {
                 findPhonesByModels(favorites) { foundPhones ->
                     // Выводим найденные телефоны
-                        val adapter = PhoneAdapter(this, foundPhones)
+                        val adapter = PhoneFavoriteAdapter(this, foundPhones)
                         val listView = findViewById<ListView>(R.id.listViewNames)
                         listView.adapter = adapter
                 }
