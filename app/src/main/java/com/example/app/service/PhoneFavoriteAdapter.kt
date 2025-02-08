@@ -47,7 +47,7 @@ class PhoneFavoriteAdapter (context: Context, private val phones: List<Phone>) :
 
         model = phone?.model?:"model"
 
-        val imageFile = File(directory, "$model.png")
+        val imageFile = File(directory, "1$model.png")
 
         // Проверяем, существует ли файл
         if (imageFile.exists()) {

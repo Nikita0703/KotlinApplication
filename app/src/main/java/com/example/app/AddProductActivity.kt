@@ -27,10 +27,13 @@ class AddProductActivity  : AppCompatActivity() {
     private lateinit var  warrantyPeriodEditText: EditText
     private lateinit var addPhoneButton: Button
     private lateinit var backButton: Button
-    private lateinit var imageView: ImageView
+    private lateinit var imageView1: ImageView
+    private lateinit var imageView2: ImageView
+    private lateinit var imageView3: ImageView
 
-    private val IMAGE_PICK_CODE = 1000
-
+    private val IMAGE_PICK_CODE1 = 1000
+    private val IMAGE_PICK_CODE2 = 1001
+    private val IMAGE_PICK_CODE3 = 1002
 
     private val phoneRepo = ProductRepository() // Предполагается, что у вас есть класс PhoneRepository
 
@@ -50,14 +53,29 @@ class AddProductActivity  : AppCompatActivity() {
 
         addPhoneButton = findViewById(R.id.addPhoneButton)
         backButton = findViewById(R.id.backButton)
-        imageView = findViewById(R.id.imageView)
+        imageView1 = findViewById(R.id.imageView1)
+        imageView2 = findViewById(R.id.imageView2)
+        imageView3 = findViewById(R.id.imageView3)
 
         backButton.setOnClickListener{back()}
 
-        val selectImageButton: Button = findViewById(R.id.selectImageButton)
-        selectImageButton.setOnClickListener {
+        val selectImageButton1: Button = findViewById(R.id.selectImageButton1)
+        val selectImageButton2: Button = findViewById(R.id.selectImageButton2)
+        val selectImageButton3: Button = findViewById(R.id.selectImageButton3)
+
+        selectImageButton1.setOnClickListener {
             //pickImageFromGallery()
-            pickImageFromDownloads()
+            pickImageFromDownloads1()
+        }
+
+        selectImageButton2.setOnClickListener {
+            //pickImageFromGallery()
+            pickImageFromDownloads2()
+        }
+
+        selectImageButton3.setOnClickListener {
+            //pickImageFromGallery()
+            pickImageFromDownloads3()
         }
 
         // Установка обработчика нажатия на кнопку
@@ -74,19 +92,45 @@ class AddProductActivity  : AppCompatActivity() {
     */
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
        super.onActivityResult(requestCode, resultCode, data)
-       if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK) {
+       if (requestCode == IMAGE_PICK_CODE1 && resultCode == Activity.RESULT_OK) {
            val imageUri: Uri? = data?.data
-           imageView.setImageURI(imageUri) // Отобразить выбранное изображение
+           imageView1.setImageURI(imageUri) // Отобразить выбранное изображение
+       }
+       if (requestCode == IMAGE_PICK_CODE2 && resultCode == Activity.RESULT_OK) {
+           val imageUri: Uri? = data?.data
+           imageView2.setImageURI(imageUri) // Отобразить выбранное изображение
+       }
+       if (requestCode == IMAGE_PICK_CODE3 && resultCode == Activity.RESULT_OK) {
+           val imageUri: Uri? = data?.data
+           imageView3.setImageURI(imageUri) // Отобразить выбранное изображение
        }
    }
 
-    private fun pickImageFromDownloads() {
+    private fun pickImageFromDownloads1() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "image/*" // Указываем, что мы хотим выбрать изображение
             putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png")) // Можно указать конкретные типы изображений
         }
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+        startActivityForResult(intent, IMAGE_PICK_CODE1)
+    }
+
+    private fun pickImageFromDownloads2() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*" // Указываем, что мы хотим выбрать изображение
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png")) // Можно указать конкретные типы изображений
+        }
+        startActivityForResult(intent, IMAGE_PICK_CODE2)
+    }
+
+    private fun pickImageFromDownloads3() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*" // Указываем, что мы хотим выбрать изображение
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png")) // Можно указать конкретные типы изображений
+        }
+        startActivityForResult(intent, IMAGE_PICK_CODE3)
     }
 
 
@@ -107,7 +151,7 @@ class AddProductActivity  : AppCompatActivity() {
 
         val phone = Phone(brand, model, os, storage,price,color,year,warranty)
 
-        saveImageToStorage()
+        saveImagesToStorage()
 
         phoneRepo.addPhone(phone,
             onSuccess = {
@@ -138,15 +182,22 @@ class AddProductActivity  : AppCompatActivity() {
         finish()
     }
 
-    private fun saveImageToStorage() {
+    private fun saveImagesToStorage() {
         val brandName = brandEditText.text.toString()
         val model = modelEditText.text.toString()
 
         // Получите изображение из ImageView (предполагаем, что оно уже выбрано)
-        imageView.isDrawingCacheEnabled = true
-        imageView.buildDrawingCache()
-        val bitmap = imageView.drawingCache
+        imageView1.isDrawingCacheEnabled = true
+        imageView1.buildDrawingCache()
+        val bitmap1 = imageView1.drawingCache
 
+        imageView2.isDrawingCacheEnabled = true
+        imageView2.buildDrawingCache()
+        val bitmap2 = imageView2.drawingCache
+
+        imageView3.isDrawingCacheEnabled = true
+        imageView3.buildDrawingCache()
+        val bitmap3 = imageView3.drawingCache
         // Создайте папку для хранения изображений, если она не существует
         val directory = File(filesDir, "images")
         if (!directory.exists()) {
@@ -155,12 +206,27 @@ class AddProductActivity  : AppCompatActivity() {
 
         // Сохраните изображение в файл с именем из поля brandEditText
         try {
-            val file = File(directory, "$model.png")
-            val outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-            outputStream.flush()
-            outputStream.close()
-            imageView.isDrawingCacheEnabled = false // Отключить кэширование
+            val file1 = File(directory, "1$model.png")
+            val outputStream1 = FileOutputStream(file1)
+            bitmap1.compress(Bitmap.CompressFormat.PNG, 100, outputStream1)
+            outputStream1.flush()
+            outputStream1.close()
+
+            val file2 = File(directory, "2$model.png")
+            val outputStream2= FileOutputStream(file2)
+            bitmap2.compress(Bitmap.CompressFormat.PNG, 100, outputStream2)
+            outputStream2.flush()
+            outputStream2.close()
+
+            val file3 = File(directory, "3$model.png")
+            val outputStream3 = FileOutputStream(file3)
+            bitmap3.compress(Bitmap.CompressFormat.PNG, 100, outputStream3)
+            outputStream3.flush()
+            outputStream3.close()
+
+            imageView1.isDrawingCacheEnabled = false // Отключить кэширование
+            imageView2.isDrawingCacheEnabled = false
+            imageView3.isDrawingCacheEnabled = false
             // Вы можете добавить уведомление об успешном сохранении
         } catch (e: Exception) {
             e.printStackTrace()

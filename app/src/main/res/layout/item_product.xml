@@ -4,27 +4,38 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
-    <ImageView
-        android:id="@+id/imageView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/brandTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp" />
+        android:layout_marginTop="16dp"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/modelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:layout_marginTop="16dp"
+        android:textSize="20sp" />
     <Button
         android:id="@+id/favoriteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="в избранное" />
 
 </LinearLayout>

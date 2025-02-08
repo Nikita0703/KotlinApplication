@@ -17,22 +17,77 @@
     <!-- Кнопка для выбора изображения -->
 
     <!-- ImageView для отображения выбранного изображения -->
-    <ImageView
-        android:id="@+id/imageView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop" />
-
-    <Button
-        android:id="@+id/selectImageButton"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:layout_gravity="center"
-        android:textSize="16sp"
-        android:text="Выбрать изображение" />
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="100dp"
+                android:layout_height="300dp"
+                android:scaleType="centerCrop" />
+
+            <Button
+                android:id="@+id/selectImageButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:text=" 1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="100dp"
+                android:layout_height="300dp"
+                android:scaleType="centerCrop" />
+
+            <Button
+                android:id="@+id/selectImageButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:text=" 2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="100dp"
+                android:layout_height="300dp"
+                android:scaleType="centerCrop" />
+
+            <Button
+                android:id="@+id/selectImageButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:text="3" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/brandEditText"

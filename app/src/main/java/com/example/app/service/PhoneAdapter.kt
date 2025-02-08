@@ -48,7 +48,7 @@ class PhoneAdapter (context: Context, private val phones: List<Phone>) : ArrayAd
 
          model = phone?.model?:"model"
 
-        val imageFile = File(directory, "$model.png")
+        val imageFile = File(directory, "1$model.png")
 
         // Проверяем, существует ли файл
         if (imageFile.exists()) {

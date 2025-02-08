@@ -16,7 +16,10 @@ import java.io.File
 class InfoActivity : AppCompatActivity(){
     private lateinit var backButton: Button
    // private lateinit var favoriteButton: Button
-    private lateinit var imageView: ImageView
+    private lateinit var imageView1: ImageView
+    private lateinit var imageView2: ImageView
+    private lateinit var imageView3: ImageView
+
     private lateinit var deleteButton: Button
 
     private val authRepository = AuthRepository()
@@ -54,23 +57,52 @@ class InfoActivity : AppCompatActivity(){
         findViewById<TextView>(R.id.releaseYearTextView).text = releaseYear
         findViewById<TextView>(R.id.warrantyPeriodTextView).text = warrantyPeriod
 
-        imageView = findViewById(R.id.imageView)
+        imageView1 = findViewById(R.id.imageView1)
+        imageView2 = findViewById(R.id.imageView2)
+        imageView3 = findViewById(R.id.imageView3)
 
         // Путь к директории
         val directory = File(filesDir, "images")
         // Путь к изображению
-        val imageFile = File(directory, "$model.png")
+        val imageFile1 = File(directory, "1$model.png")
 
         // Проверяем, существует ли файл
-        if (imageFile.exists()) {
+        if (imageFile1.exists()) {
             // Загружаем изображение в ImageView
-            val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
-            imageView.setImageBitmap(bitmap)
+            val bitmap = BitmapFactory.decodeFile(imageFile1.absolutePath)
+            imageView1.setImageBitmap(bitmap)
         } else {
             // Обработка случая, если файл не найден
            // imageView.setImageResource(R.drawable.placeholder) // Замените на ваш ресурс-заполнитель
         }
+
+        val imageFile2 = File(directory, "2$model.png")
+
+        // Проверяем, существует ли файл
+        if (imageFile2.exists()) {
+            // Загружаем изображение в ImageView
+            val bitmap = BitmapFactory.decodeFile(imageFile2.absolutePath)
+            imageView2.setImageBitmap(bitmap)
+        } else {
+            // Обработка случая, если файл не найден
+            // imageView.setImageResource(R.drawable.placeholder) // Замените на ваш ресурс-заполнитель
+        }
+
+        val imageFile3 = File(directory, "3$model.png")
+
+        // Проверяем, существует ли файл
+        if (imageFile3.exists()) {
+            // Загружаем изображение в ImageView
+            val bitmap = BitmapFactory.decodeFile(imageFile3.absolutePath)
+            imageView3.setImageBitmap(bitmap)
+        } else {
+            // Обработка случая, если файл не найден
+            // imageView.setImageResource(R.drawable.placeholder) // Замените на ваш ресурс-заполнитель
+        }
+
     }
+
+
 
     private fun back() {
         val intent = Intent(this, ProductActivity::class.java)
