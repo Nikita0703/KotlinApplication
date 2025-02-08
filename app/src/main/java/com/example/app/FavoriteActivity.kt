@@ -1,6 +1,8 @@
 package com.example.app
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.app.entity.Phone
@@ -12,15 +14,17 @@ import com.google.firebase.database.FirebaseDatabase
 
 class FavoriteActivity  : AppCompatActivity(){
     private lateinit var listViewNames: ListView
-
+    private lateinit var backButton: Button
     private val authRepository = AuthRepository()
     private val userRepository =  UserRepository()
     private val productRepository =  ProductRepository()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
-
+        backButton = findViewById(R.id.backButton)
+        backButton.setOnClickListener{back()}
         listViewNames = findViewById(R.id.listViewNames)
 
         readNames()
@@ -73,5 +77,11 @@ class FavoriteActivity  : AppCompatActivity(){
                 }
             )
         }
+    }
+
+    private fun back() {
+        val intent = Intent(this, ProfileActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
