@@ -39,7 +39,11 @@ class PhoneFavoriteAdapter (context: Context, private val phones: List<Phone>) :
         val imageView = listItemView.findViewById<ImageView>(R.id.imageView)
 
         favoriteButton = listItemView.findViewById(R.id.favoriteButton)
-        favoriteButton.setOnClickListener{removeFromFavorite()}
+        favoriteButton.setOnClickListener {
+            phone?.model?.let { model ->
+                removeFromFavorite(model)
+            }
+        }
 
         // Путь к директории
         val directory = File(context.filesDir, "images")
@@ -76,11 +80,11 @@ class PhoneFavoriteAdapter (context: Context, private val phones: List<Phone>) :
         return listItemView
     }
 
-    private fun removeFromFavorite(){
+    private fun removeFromFavorite(model1:String){
         val user = authRepository.getCurrentUser()
         val email: String = user?.email ?: "default@example.com"
 
-        userRepository.deleteModelFromFavoritesByEmail(model, email) { success, errorMessage ->
+        userRepository.deleteModelFromFavoritesByEmail(model1, email) { success, errorMessage ->
             if (success) {
                 //context.Toast.makeText(this, "добавлено успешна!", Toast.LENGTH_SHORT).show()
             } else {

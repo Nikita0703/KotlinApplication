@@ -40,7 +40,12 @@ class PhoneAdapter (context: Context, private val phones: List<Phone>) : ArrayAd
         val imageView = listItemView.findViewById<ImageView>(R.id.imageView)
 
         favoriteButton = listItemView.findViewById(R.id.favoriteButton)
-        favoriteButton.setOnClickListener{addToFavorite()}
+
+        favoriteButton.setOnClickListener {
+            phone?.model?.let { model ->
+                addToFavorite(model)
+            }
+        }
 
         // Путь к директории
         val directory = File(context.filesDir, "images")
@@ -81,11 +86,11 @@ class PhoneAdapter (context: Context, private val phones: List<Phone>) : ArrayAd
         return listItemView
     }
 
-    private fun addToFavorite(){
+    private fun addToFavorite(model1:String){
         val user = authRepository.getCurrentUser()
         val email: String = user?.email ?: "default@example.com"
 
-        userRepository.addFavoriteByEmail(email, model) { success, errorMessage ->
+        userRepository.addFavoriteByEmail(email, model1) { success, errorMessage ->
             if (success) {
                 //context.Toast.makeText(this, "добавлено успешна!", Toast.LENGTH_SHORT).show()
             } else {
