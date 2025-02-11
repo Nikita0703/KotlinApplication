@@ -120,6 +120,58 @@
             android:layout_height="wrap_content"
             android:textSize="20sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Коментарии"
+            android:textSize="27sp"
+            android:gravity="center" />
+
+        <ListView
+            android:id="@+id/listViewNames"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_marginStart="16dp">
+
+            <EditText
+                android:id="@+id/textEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="add comment" />
+
+            <EditText
+                android:id="@+id/rateEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:hint="rate" />
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Save"
+                android:layout_gravity="end" />
+
+        </LinearLayout>
+
         <Button
             android:layout_marginTop="16dp"
             android:id="@+id/deleteButton"

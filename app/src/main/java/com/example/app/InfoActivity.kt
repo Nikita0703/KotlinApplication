@@ -3,14 +3,20 @@ package com.example.app
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.app.entity.Comment
 import com.example.app.repository.AuthRepository
 import com.example.app.repository.ProductRepository
 import com.example.app.repository.UserRepository
+import com.example.app.service.CommentAdapter
+import com.example.app.service.PhoneAdapter
 import java.io.File
 
 class InfoActivity : AppCompatActivity(){
@@ -21,6 +27,10 @@ class InfoActivity : AppCompatActivity(){
     private lateinit var imageView3: ImageView
 
     private lateinit var deleteButton: Button
+
+    private lateinit var textEditText: EditText
+    private lateinit var rateEditText: EditText
+    private lateinit var saveButton: Button
 
     private val authRepository = AuthRepository()
     private val userRepository =  UserRepository()
@@ -37,15 +47,23 @@ class InfoActivity : AppCompatActivity(){
         //favoriteButton = findViewById(R.id.favoriteButton)
        // favoriteButton.setOnClickListener{addToFavorite()}
 
+        textEditText = findViewById(R.id.textEditText)
+        rateEditText = findViewById(R.id.rateEditText)
+        saveButton = findViewById(R.id.buttonSave)
+
+        //saveButton.setOnClickListener{saveComment()}
+
         // Получаем данные из Intent
         val brand = intent.getStringExtra("BRAND")
-        val model = intent.getStringExtra("MODEL")
+        val model = intent.getStringExtra("MODEL")?:"model"
         val os = intent.getStringExtra("OS")
         val storage = intent.getStringExtra("STORAGE")
         val price = intent.getStringExtra("PRICE")
         val color = intent.getStringExtra("COLOR")
         val releaseYear = intent.getStringExtra("RELEASEYEAR")
         val warrantyPeriod = intent.getStringExtra("WARRANTYPERIOD")
+
+        saveButton.setOnClickListener{saveComment(model)}
 
         // Находим TextView и устанавливаем текст
         findViewById<TextView>(R.id.brandTextView).text = brand
@@ -100,6 +118,8 @@ class InfoActivity : AppCompatActivity(){
             // imageView.setImageResource(R.drawable.placeholder) // Замените на ваш ресурс-заполнитель
         }
 
+        readNames(model)
+
     }
 
 
@@ -142,5 +162,70 @@ class InfoActivity : AppCompatActivity(){
             // Обработка ошибки получения documentId
             Toast.makeText(this, "ошибки получения documentId!", Toast.LENGTH_SHORT).show()
         })
+    }
+
+    private fun saveComment(model1:String){
+        textEditText = findViewById(R.id.textEditText)
+        rateEditText = findViewById(R.id.rateEditText)
+
+        val user = authRepository.getCurrentUser()
+
+        val email: String = user?.email ?: "default@example.com"
+        val text = textEditText.text.toString()
+        val rate = rateEditText.text.toString()
+
+        val combined = combineStrings(email, text, rate)
+
+        productRepository.addCommentByModel(model1, combined) { success, errorMessage ->
+            if (success) {
+                //context.Toast.makeText(this, "добавлено успешна!", Toast.LENGTH_SHORT).show()
+            } else {
+                println("Не удалосъ добавить в избранное: $errorMessage")
+            }
+        }
+
+    }
+
+    fun combineStrings(email: String, text: String, rate: String): String {
+        return "$email$$text$$rate"
+    }
+
+    // Функция для разделения строки на отдельные элементы
+    fun splitString(combinedString: String): Triple<String, String, String> {
+        val parts = combinedString.split("$")
+        return Triple(parts[0], parts[1], parts[2])
+    }
+
+    // Функция для чтения комментариев
+    private fun readNames(model1: String) {
+        val commentListt = mutableListOf<Comment>()
+
+        productRepository.getCommentsByModel(model1) { comments, errorMessage ->
+            if (comments != null) {
+                // Преобразование комментариев в список объектов Comment
+                val commentList = comments.map { combinedString ->
+                    val (writeBy, text, rate) = splitString(combinedString)
+                    val comment = Comment(writeBy, text, rate)
+                    commentListt.add(comment)
+                }
+
+                val adapter = CommentAdapter(this, commentListt)
+                val listView = findViewById<ListView>(R.id.listViewNames)
+                listView.adapter = adapter
+
+            } else {
+                println("Ошибка: $errorMessage")
+            }
+        }
+    }
+
+    private fun updateListView(commentList: List<Comment>) {
+        val listView: ListView = findViewById(R.id.listViewNames)
+
+        // Создание адаптера для ListView
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, commentList.map { "${it.writeBy}: ${it.text} (Рейтинг: ${it.rate})" })
+
+        // Установка адаптера в ListView
+        listView.adapter = adapter
     }
 }

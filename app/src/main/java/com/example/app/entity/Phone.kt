@@ -8,7 +8,8 @@ data class Phone(
    val price: String = "не указано", // Добавлено поле для цены
    val color: String = "не указано",   // Добавлено поле для цвета
    val releaseYear: String = "не указано", // Добавлено поле для года выпуска
-   val warrantyPeriod: String = "не указано" // Добавлено поле для гарантии в месяцах
+   val warrantyPeriod: String = "не указано", // Добавлено поле для гарантии в месяцах
+   val comments: MutableList<String> = mutableListOf()
 )
 
 
