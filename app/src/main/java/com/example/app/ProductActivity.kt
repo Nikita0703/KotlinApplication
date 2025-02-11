@@ -1,6 +1,7 @@
 package com.example.app
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -19,6 +20,10 @@ class ProductActivity : AppCompatActivity() {
     private lateinit var buttonProfile: Button
     private lateinit var listViewNames: ListView
 
+    private lateinit var searchEditText: EditText
+    private lateinit var buttonSearch: Button
+    private lateinit var buttonReturn:Button
+
     private val namesList = mutableListOf<String>()
     private lateinit var adapter: ArrayAdapter<String>
 
@@ -35,10 +40,16 @@ class ProductActivity : AppCompatActivity() {
         listViewNames = findViewById(R.id.listViewNames)
         buttonProfile = findViewById(R.id.buttonProfile)
 
+        searchEditText = findViewById(R.id.searchEditText)
+        buttonSearch = findViewById(R.id.buttonSearch)
+        buttonReturn = findViewById(R.id.buttonReturn)
+
         readNames()
 
         buttonAdd.setOnClickListener { addName() }
         buttonProfile.setOnClickListener { profile()}
+        buttonSearch.setOnClickListener{ readNamesSearch()}
+        buttonReturn.setOnClickListener{ returnRes()}
     }
     private fun addName() {
         val intent = Intent(this, AddProductActivity::class.java)
@@ -66,4 +77,52 @@ class ProductActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    private fun readNamesSearch() {
+        // Получаем текст из EditText
+        val searchQuery = findViewById<EditText>(R.id.searchEditText).text.toString()
+
+        // Очищаем ListView перед загрузкой новых данных
+        val listView = findViewById<ListView>(R.id.listViewNames)
+        listView.adapter = null
+
+        phoneRepo.readAll(
+            onSuccess = { phones ->
+                // Фильтруем телефоны по модели
+                val filteredPhones = phones.filter { phone ->
+                    phone.brand.contains(searchQuery, ignoreCase = true)
+                }
+
+                // Создаем адаптер и устанавливаем его для ListView
+                val adapter = PhoneAdapter(this, filteredPhones)
+                listView.adapter = adapter
+            },
+            onFailure = { exception ->
+                Toast.makeText(this, "Ошибка при добавлении телефона: ", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
+
+    private fun returnRes() {
+        // Очищаем ListView перед загрузкой новых данных
+        val listView = findViewById<ListView>(R.id.listViewNames)
+        listView.adapter = null
+
+        phoneRepo.readAll(
+            onSuccess = { phones ->
+                // Создаем адаптер и устанавливаем его для ListView
+                val adapter = PhoneAdapter(this, phones)
+                val listView = findViewById<ListView>(R.id.listViewNames)
+                listView.adapter = adapter
+            },
+            onFailure = {
+                    exception ->
+                Toast.makeText(this, "Ошибка при добавлении телефона:", Toast.LENGTH_SHORT).show()
+            }
+        )
+        searchEditText = findViewById(R.id.searchEditText)
+        searchEditText.text = Editable.Factory.getInstance().newEditable("")
+    }
+
+
 }
