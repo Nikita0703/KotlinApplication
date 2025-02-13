@@ -37,7 +37,6 @@ class FavoriteActivity  : AppCompatActivity(){
         userRepository.getFavoritesByEmail(email) { favorites, errorMessage ->
             if (favorites != null) {
                 findPhonesByModels(favorites) { foundPhones ->
-                    // Выводим найденные телефоны
                         val adapter = PhoneFavoriteAdapter(this, foundPhones)
                         val listView = findViewById<ListView>(R.id.listViewNames)
                         listView.adapter = adapter
@@ -54,7 +53,6 @@ class FavoriteActivity  : AppCompatActivity(){
         var completedRequests = 0
 
         if (totalModels == 0) {
-            // Если список пустой, сразу вызываем onComplete с пустым списком
             onComplete(phones)
             return
         }
@@ -64,13 +62,11 @@ class FavoriteActivity  : AppCompatActivity(){
                 onSuccess = { phone ->
                     phones.add(phone)
                     completedRequests++
-                    // Если все запросы завершены, вызываем onComplete
                     if (completedRequests == totalModels) {
                         onComplete(phones)
                     }
                 },
                 onFailure = { e ->
-                    // Обработка ошибки, но продолжаем ждать завершения всех запросов
                     completedRequests++
                     if (completedRequests == totalModels) {
                         onComplete(phones)

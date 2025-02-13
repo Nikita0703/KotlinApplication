@@ -27,13 +27,10 @@ class PhoneAdapter (context: Context, private val phones: List<Phone>) : ArrayAd
     private var model = ""
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        // Получаем телефон по позиции
         val phone = getItem(position)
 
-        // Проверяем, существует ли уже представление (view), если нет, создаем новое
         val listItemView = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_product, parent, false)
 
-        // Заполняем данные в представление
         val brandTextView = listItemView.findViewById<TextView>(R.id.brandTextView)
         val modelTextView = listItemView.findViewById<TextView>(R.id.modelTextView)
 
@@ -47,28 +44,22 @@ class PhoneAdapter (context: Context, private val phones: List<Phone>) : ArrayAd
             }
         }
 
-        // Путь к директории
         val directory = File(context.filesDir, "images")
-        // Путь к изображению
 
          model = phone?.model?:"model"
 
         val imageFile = File(directory, "1$model.png")
 
-        // Проверяем, существует ли файл
         if (imageFile.exists()) {
-            // Загружаем изображение в ImageView
             val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
             imageView.setImageBitmap(bitmap)
         } else {
-            // Обработка случая, если файл не найден
-            // imageView.setImageResource(R.drawable.placeholder) // Замените на ваш ресурс-заполнитель
+            // imageView.setImageResource(R.drawable.placeholder)
         }
 
         brandTextView.text = phone?.brand
         modelTextView.text = phone?.model
 
-        // Устанавливаем обработчик клика
         listItemView.setOnClickListener {
             val intent = Intent(context, InfoActivity::class.java).apply {
                 putExtra("BRAND", "Брэнд: ${phone?.brand}")

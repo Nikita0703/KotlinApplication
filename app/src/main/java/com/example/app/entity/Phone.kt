@@ -5,10 +5,10 @@ data class Phone(
    val model: String = "",
    val os: String = "",
    val storage: String = "",
-   val price: String = "не указано", // Добавлено поле для цены
-   val color: String = "не указано",   // Добавлено поле для цвета
-   val releaseYear: String = "не указано", // Добавлено поле для года выпуска
-   val warrantyPeriod: String = "не указано", // Добавлено поле для гарантии в месяцах
+   val price: String = "не указано",
+   val color: String = "не указано",
+   val releaseYear: String = "не указано",
+   val warrantyPeriod: String = "не указано",
    val comments: MutableList<String> = mutableListOf()
 )
 

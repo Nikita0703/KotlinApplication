@@ -60,7 +60,6 @@ class ProductActivity : AppCompatActivity() {
     private fun readNames() {
         phoneRepo.readAll(
             onSuccess = { phones ->
-                // Создаем адаптер и устанавливаем его для ListView
                 val adapter = PhoneAdapter(this, phones)
                 val listView = findViewById<ListView>(R.id.listViewNames)
                 listView.adapter = adapter
@@ -79,21 +78,17 @@ class ProductActivity : AppCompatActivity() {
     }
 
     private fun readNamesSearch() {
-        // Получаем текст из EditText
         val searchQuery = findViewById<EditText>(R.id.searchEditText).text.toString()
 
-        // Очищаем ListView перед загрузкой новых данных
         val listView = findViewById<ListView>(R.id.listViewNames)
         listView.adapter = null
 
         phoneRepo.readAll(
             onSuccess = { phones ->
-                // Фильтруем телефоны по модели
                 val filteredPhones = phones.filter { phone ->
                     phone.brand.contains(searchQuery, ignoreCase = true)
                 }
 
-                // Создаем адаптер и устанавливаем его для ListView
                 val adapter = PhoneAdapter(this, filteredPhones)
                 listView.adapter = adapter
             },
@@ -104,13 +99,11 @@ class ProductActivity : AppCompatActivity() {
     }
 
     private fun returnRes() {
-        // Очищаем ListView перед загрузкой новых данных
         val listView = findViewById<ListView>(R.id.listViewNames)
         listView.adapter = null
 
         phoneRepo.readAll(
             onSuccess = { phones ->
-                // Создаем адаптер и устанавливаем его для ListView
                 val adapter = PhoneAdapter(this, phones)
                 val listView = findViewById<ListView>(R.id.listViewNames)
                 listView.adapter = adapter

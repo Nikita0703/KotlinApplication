@@ -71,7 +71,6 @@ class ProfileActivity : AppCompatActivity() {
             pickImageFromDownloads()
         }
 
-        // Получение данных о телефоне (например, из Intent или создания нового объекта)
         val phone = Phone("Novichenko", "Nikita", "Nikita@gmail.com", "07.03.2005")
 
         val user = authRepository.getCurrentUser()
@@ -97,25 +96,17 @@ class ProfileActivity : AppCompatActivity() {
 
 
         val directory = File(filesDir, "images")
-// Путь к изображению
+
         val imageFile = File(directory, "$email.png")
 
-// Проверяем, существует ли файл
         if (imageFile.exists()) {
-            // Загружаем изображение в ImageView
             val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
             imageView.setImageBitmap(bitmap)
         } else {
-            // Загружаем изображение из drawable
-            val drawableId = R.drawable.unnamed // Убедитесь, что у вас есть изображение unnamed.jpg в папке drawable
+            val drawableId = R.drawable.unnamed
             val bitmap = BitmapFactory.decodeResource(resources, drawableId)
             imageView.setImageBitmap(bitmap)
         }
-        // Установка данных в TextView
-        //editTextName.text = Editable.Factory.getInstance().newEditable("${phone.brand}")
-        //editTextSurname.text = Editable.Factory.getInstance().newEditable("${phone.model}")
-        //editTextEmail.text = Editable.Factory.getInstance().newEditable("${phone.os}")
-       // editTextBirthday.text = Editable.Factory.getInstance().newEditable("${phone.storage}")
     }
 
     private fun back() {
@@ -135,21 +126,6 @@ class ProfileActivity : AppCompatActivity() {
 
         val new = User(name, surname, email, birthday,phoneNumber,gender)
 
-    /*userRepository.addUser(new,
-    onSuccess = {
-        Toast.makeText(this, "Телефон успешно добавлен", Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, ProductActivity::class.java)
-        startActivity(intent)
-        finish()
-    },
-    onFailure = { exception ->
-        Toast.makeText(this, "Ошибка при добавлении телефона: ${exception.message}", Toast.LENGTH_SHORT).show()
-    }
-    )
-
-
-     */
-
         userRepository.getUserByEmail(email, onSuccess = { existingUser ->
             if (existingUser != null) {
                 userRepository.getDocumentIdByEmail(email, { documentId ->
@@ -162,11 +138,9 @@ class ProfileActivity : AppCompatActivity() {
                         Toast.makeText(this, "Ошибка при обновлении данных: ${exception.message}", Toast.LENGTH_SHORT).show()
                     })
                     }, { exception ->
-                        // Обработка ошибки удаления
                         Toast.makeText(this, "ошибка при удалении!", Toast.LENGTH_SHORT).show()
                     })
             } else {
-                // Пользователь не существует, вызываем метод add
                 userRepository.addUser(new, onSuccess = {
                     Toast.makeText(this, "Пользователь успешно добавлен", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, ProductActivity::class.java)
@@ -194,15 +168,15 @@ class ProfileActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK) {
             val imageUri: Uri? = data?.data
-            imageView.setImageURI(imageUri) // Отобразить выбранное изображение
+            imageView.setImageURI(imageUri)
         }
     }
 
     private fun pickImageFromDownloads() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "image/*" // Указываем, что мы хотим выбрать изображение
-            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png")) // Можно указать конкретные типы изображений
+            type = "image/*"
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
         }
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
@@ -210,29 +184,24 @@ class ProfileActivity : AppCompatActivity() {
     private fun saveImageToStorage() {
         val email = editTextEmail.text.toString()
 
-        // Получите изображение из ImageView (предполагаем, что оно уже выбрано)
         imageView.isDrawingCacheEnabled = true
         imageView.buildDrawingCache()
         val bitmap = imageView.drawingCache
 
-        // Создайте папку для хранения изображений, если она не существует
         val directory = File(filesDir, "images")
         if (!directory.exists()) {
             directory.mkdirs()
         }
 
-        // Сохраните изображение в файл с именем из поля brandEditText
         try {
             val file = File(directory, "$email.png")
             val outputStream = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
             outputStream.flush()
             outputStream.close()
-            imageView.isDrawingCacheEnabled = false // Отключить кэширование
-            // Вы можете добавить уведомление об успешном сохранении
+            imageView.isDrawingCacheEnabled = false
         } catch (e: Exception) {
             e.printStackTrace()
-            // Обработка ошибок
         }
     }
 }

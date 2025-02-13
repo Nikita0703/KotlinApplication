@@ -8,13 +8,12 @@ class UserRepository {
     fun updateUserData(userId: String, user: User, onComplete: (Boolean, String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
 
-        // Сохраняем данные пользователя в коллекции "users"
         db.collection("users").document(userId).set(user)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    onComplete(true, null) // Успех
+                    onComplete(true, null)
                 } else {
-                    onComplete(false, task.exception?.message) // Ошибка
+                    onComplete(false, task.exception?.message)
                 }
             }
     }
@@ -31,9 +30,6 @@ class UserRepository {
             }
     }
 
-
-
-    // Метод для получения пользователя по email
     fun getUserByEmail(email: String, onSuccess: (User?) -> Unit, onFailure: (Exception) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("users")
@@ -41,49 +37,45 @@ class UserRepository {
             .get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
-                    onSuccess(null) // Если пользователь не найден
+                    onSuccess(null)
                 } else {
                     for (document in documents) {
-                        val user = document.toObject(User::class.java) // Преобразуем документ в объект User
-                        onSuccess(user) // Возвращаем найденного пользователя
+                        val user = document.toObject(User::class.java)
+                        onSuccess(user)
                         return@addOnSuccessListener
                     }
                 }
             }
             .addOnFailureListener { exception ->
-                onFailure(exception) // Обрабатываем исключения
+                onFailure(exception)
             }
     }
 
-    // Метод для обновления пользователя
     fun updateUser(userId: String, updatedUser: User, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("users").document(userId)
             .set(updatedUser)
             .addOnSuccessListener {
-                onSuccess() // Успех
+                onSuccess()
             }
             .addOnFailureListener { exception ->
-                onFailure(exception) // Обрабатываем исключения
+                onFailure(exception)
             }
     }
 
-    // Метод для добавления нового пользователя
     /*fun addUser(newUser: User, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("users").add(newUser)
             .addOnSuccessListener {
-                onSuccess() // Успех
+                onSuccess()
             }
             .addOnFailureListener { exception ->
-                onFailure(exception) // Обрабатываем исключения
+                onFailure(exception)
             }
     }
 
      */
 
-
-    // Метод для поиска пользователя по email
     fun findUserByEmail(email: String, onComplete: (User?, String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("users")
@@ -93,19 +85,17 @@ class UserRepository {
                 if (task.isSuccessful) {
                     val documents = task.result?.documents
                     if (documents != null && documents.isNotEmpty()) {
-                        // Предполагаем, что email уникален и берем первый документ
                         val user = documents[0].toObject(User::class.java)
                         onComplete(user, null)
                     } else {
                         onComplete(null, "Пользователь не найден")
                     }
                 } else {
-                    onComplete(null, task.exception?.message) // Ошибка
+                    onComplete(null, task.exception?.message)
                 }
             }
     }
 
-    // Метод для проверки существования пользователя по email
     fun getUserByEmail(email: String, onComplete: (Boolean, String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("users")
@@ -115,12 +105,12 @@ class UserRepository {
                 if (task.isSuccessful) {
                     val documents = task.result?.documents
                     if (documents != null && documents.isNotEmpty()) {
-                        onComplete(true, null) // Пользователь существует
+                        onComplete(true, null)
                     } else {
-                        onComplete(false, null) // Пользователь не найден
+                        onComplete(false, null)
                     }
                 } else {
-                    onComplete(false, task.exception?.message) // Ошибка
+                    onComplete(false, task.exception?.message)
                 }
             }
     }
@@ -130,11 +120,9 @@ class UserRepository {
 
         findUserByEmail(email) { user, errorMessage ->
             if (user != null) {
-                // Добавляем новый элемент в список favorites
                 val updatedFavorites = user.favorites.toMutableList()
                 updatedFavorites.add(favorite)
 
-                // Обновляем пользователя в базе данных
                 db.collection("users").whereEqualTo("email", email).get()
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful && task.result != null && task.result.documents.isNotEmpty()) {
@@ -142,17 +130,17 @@ class UserRepository {
                             userDocument.reference.update("favorites", updatedFavorites)
                                 .addOnCompleteListener { updateTask ->
                                     if (updateTask.isSuccessful) {
-                                        onComplete(true, null) // Успех
+                                        onComplete(true, null)
                                     } else {
-                                        onComplete(false, updateTask.exception?.message) // Ошибка при обновлении
+                                        onComplete(false, updateTask.exception?.message)
                                     }
                                 }
                         } else {
-                            onComplete(false, "Ошибка при получении документа пользователя") // Ошибка получения документа
+                            onComplete(false, "Ошибка при получении документа пользователя")
                         }
                     }
             } else {
-                onComplete(false, errorMessage) // Ошибка поиска пользователя
+                onComplete(false, errorMessage)
             }
         }
     }
@@ -167,12 +155,12 @@ class UserRepository {
                     val documents = task.result?.documents
                     if (documents != null && documents.isNotEmpty()) {
                         val user = documents[0].toObject(User::class.java)
-                        onComplete(user?.favorites, null) // Возвращаем список favorites
+                        onComplete(user?.favorites, null)
                     } else {
-                        onComplete(null, "Пользователь не найден") // Пользователь не найден
+                        onComplete(null, "Пользователь не найден")
                     }
                 } else {
-                    onComplete(null, task.exception?.message) // Ошибка при выполнении запроса
+                    onComplete(null, task.exception?.message)
                 }
             }
     }
@@ -189,31 +177,28 @@ class UserRepository {
                         val userDocument = documents[0]
                         val user = userDocument.toObject(User::class.java)
 
-                        // Проверяем, есть ли элемент в favorites
                         if (user?.favorites?.contains(favorite) == true) {
-                            // Удаляем элемент из списка favorites
                             user.favorites.remove(favorite)
 
-                            // Обновляем документ в Firestore
                             userDocument.reference.update("favorites", user.favorites)
                                 .addOnCompleteListener { updateTask ->
                                     if (updateTask.isSuccessful) {
-                                        onComplete(true, null) // Успешно удалено
+                                        onComplete(true, null)
                                     } else {
                                         onComplete(
                                             false,
                                             updateTask.exception?.message
-                                        ) // Ошибка при обновлении
+                                        )
                                     }
                                 }
                         } else {
-                            onComplete(false, "Элемент не найден в избранном") // Элемент не найден
+                            onComplete(false, "Элемент не найден в избранном")
                         }
                     } else {
-                        onComplete(false, "Пользователь не найден") // Пользователь не найден
+                        onComplete(false, "Пользователь не найден")
                     }
                 } else {
-                    onComplete(false, task.exception?.message) // Ошибка при выполнении запроса
+                    onComplete(false, task.exception?.message)
                 }
             }
 
@@ -226,12 +211,9 @@ class UserRepository {
             .get()
             .addOnSuccessListener { querySnapshot ->
                 if (!querySnapshot.isEmpty) {
-                    // Получаем первый документ из результатов
                     val document = querySnapshot.documents.first()
-                    // Возвращаем его ID
                     onSuccess(document.id)
                 } else {
-                    // Если документы не найдены
                     onFailure(Exception("Document not found"))
                 }
             }

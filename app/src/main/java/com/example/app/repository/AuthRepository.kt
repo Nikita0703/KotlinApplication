@@ -11,9 +11,9 @@ class AuthRepository {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    onComplete(true, null) // Успех
+                    onComplete(true, null)
                 } else {
-                    onComplete(false, task.exception?.message) // Ошибка
+                    onComplete(false, task.exception?.message)
                 }
             }
     }
@@ -22,9 +22,9 @@ class AuthRepository {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    onComplete(true, null) // Успех
+                    onComplete(true, null)
                 } else {
-                    onComplete(false, task.exception?.message) // Ошибка
+                    onComplete(false, task.exception?.message)
                 }
             }
     }
@@ -35,7 +35,7 @@ class AuthRepository {
 
     fun getCurrentUserId(): String? {
         val user = auth.currentUser
-        return user?.uid // Возвращает userId или null, если пользователь не авторизован
+        return user?.uid
     }
 
 

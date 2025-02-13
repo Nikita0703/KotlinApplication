@@ -10,7 +10,6 @@ import kotlinx.coroutines.tasks.await
 class ProductRepository {
     private val db: FirebaseFirestore = Firebase.firestore
 
-    // Метод для добавления телефона в Firestore
     fun addPhone(phone: Phone, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         db.collection("phones")
             .add(phone)
@@ -22,7 +21,6 @@ class ProductRepository {
             }
     }
 
-    // Метод для удаления телефона из Firestore по ID документа
     fun deletePhone(documentId: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         db.collection("phones").document(documentId)
             .delete()
@@ -76,14 +74,13 @@ class ProductRepository {
                 if (task.isSuccessful) {
                     val documents = task.result?.documents
                     if (documents != null && documents.isNotEmpty()) {
-                        // Предполагаем, что email уникален и берем первый документ
                         val user = documents[0].toObject(Phone::class.java)
                         onComplete(user, null)
                     } else {
                         onComplete(null, "Пользователь не найден")
                     }
                 } else {
-                    onComplete(null, task.exception?.message) // Ошибка
+                    onComplete(null, task.exception?.message)
                 }
             }
     }
@@ -98,26 +95,21 @@ class ProductRepository {
         return if (querySnapshot.isEmpty) {
             null
         } else {
-            // Предполагаем, что модель уникальна, и возвращаем первый найденный телефон
             querySnapshot.documents.first().toObject(Phone::class.java)
         }
     }
 
     */
 
-    // Метод для получения documentId по модели телефона
     fun getDocumentIdByModel(model: String, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
         db.collection("phones")
             .whereEqualTo("model", model)
             .get()
             .addOnSuccessListener { querySnapshot ->
                 if (!querySnapshot.isEmpty) {
-                    // Получаем первый документ из результатов
                     val document = querySnapshot.documents.first()
-                    // Возвращаем его ID
                     onSuccess(document.id)
                 } else {
-                    // Если документы не найдены
                     onFailure(Exception("Document not found"))
                 }
             }
@@ -131,11 +123,9 @@ class ProductRepository {
 
         findPhoneByModelForComment(model) { phone, errorMessage ->
             if (phone != null) {
-                // Добавляем новый элемент в список favorites
                 val updatedFavorites = phone.comments.toMutableList()
                 updatedFavorites.add(favorite)
 
-                // Обновляем пользователя в базе данных
                 db.collection("phones").whereEqualTo("model", model).get()
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful && task.result != null && task.result.documents.isNotEmpty()) {
@@ -143,17 +133,17 @@ class ProductRepository {
                             userDocument.reference.update("comments", updatedFavorites)
                                 .addOnCompleteListener { updateTask ->
                                     if (updateTask.isSuccessful) {
-                                        onComplete(true, null) // Успех
+                                        onComplete(true, null)
                                     } else {
-                                        onComplete(false, updateTask.exception?.message) // Ошибка при обновлении
+                                        onComplete(false, updateTask.exception?.message)
                                     }
                                 }
                         } else {
-                            onComplete(false, "Ошибка при получении документа пользователя") // Ошибка получения документа
+                            onComplete(false, "Ошибка при получении документа пользователя")
                         }
                     }
             } else {
-                onComplete(false, errorMessage) // Ошибка поиска пользователя
+                onComplete(false, errorMessage)
             }
         }
     }
@@ -168,12 +158,12 @@ class ProductRepository {
                     val documents = task.result?.documents
                     if (documents != null && documents.isNotEmpty()) {
                         val user = documents[0].toObject(Phone::class.java)
-                        onComplete(user?.comments, null) // Возвращаем список favorites
+                        onComplete(user?.comments, null)
                     } else {
-                        onComplete(null, "Пользователь не найден") // Пользователь не найден
+                        onComplete(null, "Пользователь не найден")
                     }
                 } else {
-                    onComplete(null, task.exception?.message) // Ошибка при выполнении запроса
+                    onComplete(null, task.exception?.message)
                 }
             }
     }

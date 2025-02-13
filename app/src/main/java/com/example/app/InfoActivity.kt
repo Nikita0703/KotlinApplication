@@ -38,7 +38,7 @@ class InfoActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_info) // Убедитесь, что вы создали layout для этого активити
+        setContentView(R.layout.activity_info)
 
         backButton = findViewById(R.id.backButton)
         backButton.setOnClickListener{back()}
@@ -53,7 +53,6 @@ class InfoActivity : AppCompatActivity(){
 
         //saveButton.setOnClickListener{saveComment()}
 
-        // Получаем данные из Intent
         val brand = intent.getStringExtra("BRAND")
         val model = intent.getStringExtra("MODEL")?:"model"
         val os = intent.getStringExtra("OS")
@@ -65,7 +64,6 @@ class InfoActivity : AppCompatActivity(){
 
         saveButton.setOnClickListener{saveComment(model)}
 
-        // Находим TextView и устанавливаем текст
         findViewById<TextView>(R.id.brandTextView).text = brand
         findViewById<TextView>(R.id.modelTextView).text = "Модель: ${model}"
         findViewById<TextView>(R.id.osTextView).text = os
@@ -79,43 +77,32 @@ class InfoActivity : AppCompatActivity(){
         imageView2 = findViewById(R.id.imageView2)
         imageView3 = findViewById(R.id.imageView3)
 
-        // Путь к директории
         val directory = File(filesDir, "images")
-        // Путь к изображению
         val imageFile1 = File(directory, "1$model.png")
 
-        // Проверяем, существует ли файл
         if (imageFile1.exists()) {
-            // Загружаем изображение в ImageView
             val bitmap = BitmapFactory.decodeFile(imageFile1.absolutePath)
             imageView1.setImageBitmap(bitmap)
         } else {
-            // Обработка случая, если файл не найден
-           // imageView.setImageResource(R.drawable.placeholder) // Замените на ваш ресурс-заполнитель
+           // imageView.setImageResource(R.drawable.placeholder)
         }
 
         val imageFile2 = File(directory, "2$model.png")
 
-        // Проверяем, существует ли файл
         if (imageFile2.exists()) {
-            // Загружаем изображение в ImageView
             val bitmap = BitmapFactory.decodeFile(imageFile2.absolutePath)
             imageView2.setImageBitmap(bitmap)
         } else {
-            // Обработка случая, если файл не найден
-            // imageView.setImageResource(R.drawable.placeholder) // Замените на ваш ресурс-заполнитель
+            // imageView.setImageResource(R.drawable.placeholder)
         }
 
         val imageFile3 = File(directory, "3$model.png")
 
-        // Проверяем, существует ли файл
         if (imageFile3.exists()) {
-            // Загружаем изображение в ImageView
             val bitmap = BitmapFactory.decodeFile(imageFile3.absolutePath)
             imageView3.setImageBitmap(bitmap)
         } else {
-            // Обработка случая, если файл не найден
-            // imageView.setImageResource(R.drawable.placeholder) // Замените на ваш ресурс-заполнитель
+            // imageView.setImageResource(R.drawable.placeholder)
         }
 
         readNames(model)
@@ -152,14 +139,11 @@ class InfoActivity : AppCompatActivity(){
 
         productRepository.getDocumentIdByModel(model, { documentId ->
             productRepository.deletePhone(documentId, {
-                // Успешное удаление
                 Toast.makeText(this, "удалено успешна!", Toast.LENGTH_SHORT).show()
             }, { exception ->
-                // Обработка ошибки удаления
                 Toast.makeText(this, "ошибка при удалении!", Toast.LENGTH_SHORT).show()
             })
         }, { exception ->
-            // Обработка ошибки получения documentId
             Toast.makeText(this, "ошибки получения documentId!", Toast.LENGTH_SHORT).show()
         })
     }
@@ -190,19 +174,16 @@ class InfoActivity : AppCompatActivity(){
         return "$email$$text$$rate"
     }
 
-    // Функция для разделения строки на отдельные элементы
     fun splitString(combinedString: String): Triple<String, String, String> {
         val parts = combinedString.split("$")
         return Triple(parts[0], parts[1], parts[2])
     }
 
-    // Функция для чтения комментариев
     private fun readNames(model1: String) {
         val commentListt = mutableListOf<Comment>()
 
         productRepository.getCommentsByModel(model1) { comments, errorMessage ->
             if (comments != null) {
-                // Преобразование комментариев в список объектов Comment
                 val commentList = comments.map { combinedString ->
                     val (writeBy, text, rate) = splitString(combinedString)
                     val comment = Comment(writeBy, text, rate)
@@ -222,10 +203,8 @@ class InfoActivity : AppCompatActivity(){
     private fun updateListView(commentList: List<Comment>) {
         val listView: ListView = findViewById(R.id.listViewNames)
 
-        // Создание адаптера для ListView
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, commentList.map { "${it.writeBy}: ${it.text} (Рейтинг: ${it.rate})" })
 
-        // Установка адаптера в ListView
         listView.adapter = adapter
     }
 }
